@@ -7,4 +7,6 @@ public interface IUserService
     Task<User> Login(string username, string password);
 
     Task<User> GetUserById(int id);
+
+    Task UpdateCompanyName(int userId, string companyName);
 }

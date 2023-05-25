@@ -22,21 +22,21 @@ public class UserRepository : IUserRepository
 
         if (BCrypt.Net.BCrypt.Verify(password, user.Password))
         {
-            return Task.FromResult(new User(user.Id, user.Username));
+            return Task.FromResult(new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney));
         }
 
         throw new Exception("Incorrect password for username: " + username);
     }
 
-    public async Task Signup(string username, string password)
+    public async Task Signup(User user, string password)
     {
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
-        UserDTO user = new UserDTO(0, username, passwordHash);
+        UserDTO userdto = new UserDTO(user.Id, user.Username, passwordHash, user.CompanyName, user.CompanyMoney);
 
         try
         {
-            _context.Users.Add(user);
+            _context.Users.Add(userdto);
             await _context.SaveChangesAsync();
         }
         catch (System.Exception)
@@ -54,6 +54,11 @@ public class UserRepository : IUserRepository
             throw new Exception("Username not found");
         }
 
-        return new User(user.Id, user.Username);
+        return new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney);
+    }
+
+    public Task UpdateCompanyName(int userId, string companyName)
+    {
+        return Task.CompletedTask;
     }
 }

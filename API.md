@@ -16,6 +16,8 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 
 - Id: number
 - Username: string
+- CompanyName: string
+- CompanyMoney: number
 
 <details>
     <summary><code>POST /signup</code></summary>
@@ -58,5 +60,17 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
     Response
     200 OK
     User
+
+</details>
+
+<details>
+    <summary><code>POST /company/name</code></summary>
+    Request
+    {
+        "companyName": string 
+    }
+
+    Response
+    200 OK
 
 </details>

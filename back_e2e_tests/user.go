@@ -7,18 +7,29 @@ import (
 	"github.com/google/uuid"
 )
 
-func testUser() {
+// First login should have empty company name
+
+// Signup, login, session and set company name
+func testAccountCreation() {
 	fmt.Println("Testing user")
 
+	// Test signup
 	testSignupWithEmptyDataReturns400()
 	testSignupWithUserReturns200()
 
+	// Test session before login fails
 	testSessionBeforeLoginReturns401()
 
-	testLoginWithUserReturns200User()
+	// Test login
+	testFirstLoginWithUserReturns200UserWithEmptyCompanyName()
 	testLoginWithWrongDataReturns400()
 
+	// Test session after login succeeds
 	testSessionReturns200User()
+
+	// Test update company name
+	testUpdateCompanyNameReturns200()
+	testUpdateCompanyNameEmptyReturns400()
 }
 
 type authCmd struct {
@@ -57,7 +68,7 @@ func testSignupWithUserReturns200() {
 
 // Login
 
-func testLoginWithUserReturns200User() {
+func testFirstLoginWithUserReturns200UserWithEmptyCompanyName() {
 	cmd := authCmd{
 		Username: config.Username,
 		Password: config.Password,
@@ -98,8 +109,8 @@ func testLoginWithUserReturns200User() {
 	config.Jwt = jwt
 
 	body := readBody[User](res)
-	if body.Id == 0 || body.Username == "" {
-		log.Fatal("Login body response failed")
+	if body.CompanyName != "" {
+		log.Fatal("First login company name is not empty")
 	}
 	config.UserId = body.Id
 }
@@ -134,5 +145,35 @@ func testSessionReturns200User() {
 	body := readBody[User](res)
 	if body.Id != config.UserId || body.Username != config.Username {
 		log.Fatal("Check session body failed returning user")
+	}
+}
+
+// Company name
+
+type updateCompanyNameCmd struct {
+	CompanyName string
+}
+
+// TODO:
+
+func testUpdateCompanyNameReturns200() {
+	cmd := updateCompanyNameCmd{
+		CompanyName: uuid.NewString(),
+	}
+
+	res := request(post, "/user/company/name", writeBody(cmd))
+	if res.StatusCode != 200 {
+		log.Fatal("Update company name failed returning 200")
+	}
+}
+
+func testUpdateCompanyNameEmptyReturns400() {
+	cmd := updateCompanyNameCmd{
+		CompanyName: "",
+	}
+
+	res := request(post, "/user/company/name", writeBody(cmd))
+	if res.StatusCode != 400 {
+		log.Fatal("Update company name empty failed returning 400")
 	}
 }

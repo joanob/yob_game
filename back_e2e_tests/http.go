@@ -60,18 +60,16 @@ func request(method string, url string, body []byte) *http.Response {
 }
 
 func readBody[T any](res *http.Response) *T {
-	resBody, err := io.ReadAll(res.Body)
-	if err != nil {
-		log.Fatal("Error reading response body: ", err)
-	}
-	res.Body.Close()
-
 	body := new(T)
 
-	err = json.Unmarshal(resBody, body)
+	decoder := json.NewDecoder(res.Body)
+	decoder.DisallowUnknownFields()
+
+	err := decoder.Decode(&body)
 	if err != nil {
 		log.Fatal("Error unmarshalling", err)
 	}
 
+	res.Body.Close()
 	return body
 }

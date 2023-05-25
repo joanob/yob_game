@@ -23,7 +23,8 @@ func main() {
 
 	config.ApiUrl = apiUrl
 
-	testUser()
+	// Tests
+	testAccountCreation()
 
 	fmt.Println("All tests passed successfully")
 }

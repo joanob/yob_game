@@ -5,6 +5,7 @@ namespace Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly uint initialCompanyMoney = 0;
 
     public UserService(IUserRepository userRepository)
     {
@@ -26,11 +27,23 @@ public class UserService : IUserService
         {
             throw new Exception("Empty data");
         }
-        await _userRepository.Signup(username, password);
+
+        var user = new User(0, username, "", initialCompanyMoney);
+
+        await _userRepository.Signup(user, password);
     }
 
     public async Task<User> GetUserById(int id)
     {
         return await _userRepository.GetById(id);
+    }
+
+    public async Task UpdateCompanyName(int userId, string companyName)
+    {
+        if (companyName == "")
+        {
+            throw new Exception("Company name is empty");
+        }
+        await _userRepository.UpdateCompanyName(userId, companyName);
     }
 }

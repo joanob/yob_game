@@ -81,6 +81,27 @@ public class UserController : ControllerBase
             return StatusCode(500);
         }
     }
+
+    [HttpPost("company/name")]
+    public async Task<ActionResult> UpdateCompanyName([FromBody] UpdateCompanyNameCmd cmd)
+    {
+        var userId = HttpContext.Items["UserId"];
+
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        try
+        {
+            await _userService.UpdateCompanyName((int)userId, cmd.CompanyName);
+            return Ok();
+        }
+        catch (System.Exception)
+        {
+            return StatusCode(400);
+        }
+    }
 }
 
 public class UserSignupLoginCmd
@@ -93,4 +114,14 @@ public class UserSignupLoginCmd
 
     public string Username { get; set; }
     public string Password { get; set; }
+}
+
+public class UpdateCompanyNameCmd
+{
+    public UpdateCompanyNameCmd(string CompanyName)
+    {
+        this.CompanyName = CompanyName;
+    }
+
+    public string CompanyName { get; set; }
 }

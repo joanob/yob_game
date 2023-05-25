@@ -4,7 +4,7 @@ namespace Data;
 
 public class UserDTO : User
 {
-    public UserDTO(int Id, string Username, string Password) : base(Id, Username)
+    public UserDTO(int Id, string Username, string Password, string CompanyName, uint CompanyMoney) : base(Id, Username, CompanyName, CompanyMoney)
     {
         this.Password = Password;
     }
