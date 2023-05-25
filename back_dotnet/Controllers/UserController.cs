@@ -24,8 +24,7 @@ public class UserController : ControllerBase
         jwtKey = configJwtKey;
     }
 
-    [Route("signup")]
-    [HttpPost]
+    [HttpPost("signup")]
     [AllowAnonymous]
     public async Task<ActionResult> Signup([FromBody] UserSignupLoginCmd cmd)
     {
@@ -40,8 +39,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [Route("login")]
-    [HttpPost]
+    [HttpPost("login")]
     [AllowAnonymous]
     public async Task<ActionResult<User>> Login([FromBody] UserSignupLoginCmd cmd)
     {
@@ -63,8 +61,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [Route("session")]
-    [HttpGet]
+    [HttpGet("session")]
     public async Task<ActionResult<User>> GetLoggedInUser()
     {
         var userId = HttpContext.Items["UserId"];
