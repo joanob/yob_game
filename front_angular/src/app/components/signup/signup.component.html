@@ -1,0 +1,7 @@
+<form class="flex flex-col justify-center">
+  <label for="username">Username</label>
+  <input type="text" class="outline-1" id="username" name="username" [(ngModel)]="username">
+  <label for="password">Password</label>
+  <input type="password" class="outline-1" id="password" name="password" [(ngModel)]="password">
+  <button type="submit" (click)="signup()">Signup</button>
+</form>

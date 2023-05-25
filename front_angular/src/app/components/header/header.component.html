@@ -1,0 +1,24 @@
+<header class="w-full sticky bg-white">
+  <nav class="h-12 flex justify-between items-center px-5">
+    <a routerLink="/">
+      <h1 class="text-lg">Todo</h1>
+    </a>
+
+    <ul class="flex flex-row">
+      <ng-template [ngIf]="!this.authService.isLoggedIn()">
+        <li class="mr-2">
+          <a routerLink="/signup">Signup</a>
+        </li>
+        <li>
+          <a routerLink="/login">Login</a>
+        </li>
+      </ng-template>
+
+      <ng-template [ngIf]="this.authService.isLoggedIn()">
+        <li>
+          <a routerLink="/account">{{this.authService.user.username}}</a>
+        </li>
+      </ng-template>
+    </ul>
+  </nav>
+</header>
