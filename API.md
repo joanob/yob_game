@@ -46,7 +46,8 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 
     Response
     200 OK
-    HTTP Only Cookie X-Access-Token = JWT
+    User
+    HTTP-Only Cookie X-Access-Token = JWT
     Cookie X-Session-Started = true
 
 </details>
@@ -56,5 +57,6 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
     
     Response
     200 OK
+    User
 
 </details>
