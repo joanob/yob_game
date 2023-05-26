@@ -9,15 +9,18 @@ import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard {
+// Company name must be set to play
+export class CompanyNameGuard {
   constructor(private authService: UserService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.authService.isLoggedIn()) {
-      return true;
-    } else {
-      this.router.navigate(['/login']);
+    if (
+      this.authService.isLoggedIn() &&
+      this.authService.user.companyName === ''
+    ) {
+      this.router.navigate(['/account/settings']);
       return false;
     }
+    return true;
   }
 }

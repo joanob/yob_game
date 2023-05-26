@@ -51,14 +51,23 @@ public class UserRepository : IUserRepository
 
         if (user == null)
         {
-            throw new Exception("Username not found");
+            throw new Exception("User not found");
         }
 
         return new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney);
     }
 
-    public Task UpdateCompanyName(int userId, string companyName)
+    public async Task UpdateCompanyName(int userId, string companyName)
     {
-        return Task.CompletedTask;
+        var user = await _context.Users.FindAsync(userId);
+
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        user.CompanyName = companyName;
+
+        await _context.SaveChangesAsync();
     }
 }

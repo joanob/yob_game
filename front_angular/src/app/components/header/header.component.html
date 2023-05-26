@@ -15,9 +15,10 @@
       </ng-template>
 
       <ng-template [ngIf]="this.authService.isLoggedIn()">
-        <li>
-          <a routerLink="/account">{{this.authService.user.username}}</a>
+        <li class="mr-2">
+          <a routerLink="/account">{{ this.authService.user.username }}</a>
         </li>
+        <li style="cursor: pointer" (click)="logout()">Logout</li>
       </ng-template>
     </ul>
   </nav>

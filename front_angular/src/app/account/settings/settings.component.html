@@ -1,0 +1,15 @@
+<form *ngIf="this.userService.user.companyName == ''">
+  <p>Choose a company name</p>
+  <label for="company-name">Company name</label>
+  <input
+    type="text"
+    id="company-name"
+    name="username"
+    [(ngModel)]="companyName"
+  />
+  <button type="submit" (click)="updateCompanyName()">Create company</button>
+</form>
+
+<main *ngIf="this.userService.user.companyName !== ''">
+  <!-- All settings -->
+</main>
