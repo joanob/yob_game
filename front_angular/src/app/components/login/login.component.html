@@ -1,7 +1,28 @@
-<form class="flex flex-col justify-center">
-  <label for="username">Username</label>
-  <input type="text" class="outline-1" id="username" name="username" [(ngModel)]="username">
-  <label for="password">Password</label>
-  <input type="password" class="outline-1" id="password" name="password" [(ngModel)]="password">
-  <button type="submit" (click)="login()">Login</button>
-</form>
+<main class="flex justify-center">
+  <form class="flex flex-col p-6 space-y-4">
+    <h1 class="text-center text-lg font-bold">Login</h1>
+    <label for="username">Username</label>
+    <input
+      type="text"
+      class="bg-gray-50 border border-gray-300 text-gray-900 p-2"
+      id="username"
+      name="username"
+      [(ngModel)]="username"
+    />
+    <label for="password">Password</label>
+    <input
+      type="password"
+      class="bg-gray-50 border border-gray-300 text-gray-900 p-2"
+      id="password"
+      name="password"
+      [(ngModel)]="password"
+    />
+    <button
+      type="submit"
+      class="w-full text-white bg-green-400 font-medium text-center p-2.5"
+      (click)="login()"
+    >
+      Login
+    </button>
+  </form>
+</main>

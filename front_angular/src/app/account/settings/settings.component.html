@@ -1,15 +1,26 @@
-<form *ngIf="this.userService.user.companyName == ''">
-  <p>Choose a company name</p>
-  <label for="company-name">Company name</label>
-  <input
-    type="text"
-    id="company-name"
-    name="username"
-    [(ngModel)]="companyName"
-  />
-  <button type="submit" (click)="updateCompanyName()">Create company</button>
-</form>
+<main class="flex flex-col justify-center">
+  <ng-template [ngIf]="this.userService.user.companyName === ''">
+    <form class="flex flex-col p-6 space-y-4">
+      <h1 class="text-center text-lg font-bold">Choose a company name</h1>
+      <label for="company-name">Company name</label>
+      <input
+        type="text"
+        class="bg-gray-50 border border-gray-300 text-gray-900 p-2"
+        id="company-name"
+        name="username"
+        [(ngModel)]="companyName"
+      />
+      <button
+        type="submit"
+        class="w-full text-white bg-green-400 font-medium text-center p-2.5"
+        (click)="updateCompanyName()"
+      >
+        Create company
+      </button>
+    </form>
+  </ng-template>
 
-<main *ngIf="this.userService.user.companyName !== ''">
-  <!-- All settings -->
+  <ng-template [ngIf]="this.userService.user.companyName !== ''">
+    <h1 class="text-center text-lg font-bold">Settings</h1>
+  </ng-template>
 </main>

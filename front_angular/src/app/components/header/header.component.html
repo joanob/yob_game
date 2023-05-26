@@ -1,7 +1,7 @@
 <header class="w-full sticky bg-white">
   <nav class="h-12 flex justify-between items-center px-5">
-    <a routerLink="/">
-      <h1 class="text-lg">Todo</h1>
+    <a [routerLink]="this.authService.isLoggedIn() ? ['/home'] : ['/']">
+      <h2 class="text-lg">Your Own Boss</h2>
     </a>
 
     <ul class="flex flex-row">
