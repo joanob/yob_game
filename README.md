@@ -24,7 +24,7 @@ I want to balance the game to have a more smooth progress and be enjoyable at al
 
 ## Game entities
 
-To have the reference across all technologies I will have the resources and buildings list here with their main characteristics.
+To have the reference across all technologies I will have the resources and buildings list here with their main characteristics. All this data will be stored in a json file to load to the different backends. JSON file will be checked by the balancer.
 
 ### Resources
 

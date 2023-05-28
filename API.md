@@ -1,8 +1,54 @@
 # Your Own Boss API Reference
 
+## Game data
+
+Resources, production buildings, production processes and some other data doesn't change over time. All this data is contained in a JSON file.
+
+Ids must be unique for that type of entity. Processes have their own ids to have independence on production buildings.
+
+```
+{
+    "resources" : [
+        {
+            "id": number,
+            "name": string,
+            "price": number
+        }
+    ],
+    "productionBuildings": [
+        {
+            "id": number,
+            "name": string,
+            "buildCost": number,
+            "processes": [
+                {
+                    "id": number,
+                    "name": string,
+                    "input": [
+                        {
+                            "resourceId": number,
+                            "quantity": number
+                        }
+                    ],
+                    "miliseconds": number,
+                    "output": [
+                        {
+                            "resourceId": number,
+                            "quantity": number
+                        }
+                    ],
+                }
+            ]
+        }
+    ]
+}
+```
+
+## HTTP
+
 All non anonymous requests require a X-Access-Token Cookie with the JWT
 
-## Response Codes
+### Response Codes
 
 - 200 OK: everything went fine
 - 400 Bad Request: data sent is not correct
@@ -10,7 +56,7 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 - 404 Not Found: object requested was not found
 - 500 Internal Server Error: something went wrong
 
-## Users
+### Users
 
 <code>/user</code>
 
