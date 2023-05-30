@@ -15,6 +15,7 @@ public class GameDataService : IGameDataService
         var rawJSON = sreader.ReadToEnd();
         sreader.Close();
 
+        // Deserialize object works but sets to null (0 for numbers) the values that are not found. Gamedata should always be verified by balancer before using in backend to avoid this kind of problems
         var gamedata = JsonConvert.DeserializeObject<GameData>(rawJSON);
 
         if (gamedata == null || gamedata.Resources == null || gamedata.ProductionBuildings == null)
