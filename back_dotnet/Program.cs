@@ -24,6 +24,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Services
 
+builder.Services.AddSingleton<IGameDataService, GameDataService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Controllers

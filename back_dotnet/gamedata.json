@@ -1,0 +1,114 @@
+{
+  "resources": [
+    {
+      "id": 1,
+      "name": "Electricity",
+      "price": 1
+    },
+    {
+      "id": 2,
+      "name": "Water",
+      "price": 2
+    },
+    {
+      "id": 3,
+      "name": "Seed",
+      "price": 4
+    },
+    {
+      "id": 4,
+      "name": "Apple",
+      "price": 5
+    }
+  ],
+  "productionBuildings": [
+    {
+      "id": 1,
+      "name": "Solar panel",
+      "buildCost": 500,
+      "processes": [
+        {
+          "id": 1,
+          "name": "Sunny day",
+          "input": [],
+          "miliseconds": 200,
+          "output": [
+            {
+              "resourceId": 1,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Water pump",
+      "buildCost": 500,
+      "processes": [
+        {
+          "id": 2,
+          "name": "Water well",
+          "input": [
+            {
+              "resourceId": 1,
+              "quantity": 1
+            }
+          ],
+          "miliseconds": 250,
+          "output": [
+            {
+              "resourceId": 2,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Farm",
+      "buildCost": 50000,
+      "processes": [
+        {
+          "id": 3,
+          "name": "Apple tree",
+          "input": [
+            {
+              "resourceId": 3,
+              "quantity": 1
+            },
+            {
+              "resourceId": 2,
+              "quantity": 2
+            }
+          ],
+          "miliseconds": 800,
+          "output": [
+            {
+              "resourceId": 4,
+              "quantity": 3
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Seed drying",
+          "input": [
+            {
+              "resourceId": 4,
+              "quantity": 1
+            }
+          ],
+          "miliseconds": 500,
+          "output": [
+            {
+              "resourceId": 3,
+              "quantity": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
