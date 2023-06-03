@@ -72,8 +72,8 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 
     Request
     {
-        "username": string,
-        "password": string
+        username: string,
+        password: string
     }
 
     Response
@@ -88,8 +88,8 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 
     Request
     {
-        "username": string,
-        "password": string
+        username: string,
+        password: string
     }
 
     Response
@@ -113,7 +113,64 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
     <summary><code>POST /company/name</code></summary>
     Request
     {
-        "companyName": string 
+        companyName: string 
+    }
+
+    Response
+    200 OK
+
+</details>
+
+### Gamedata
+
+<details>
+    <summary><code>GET /gamedata/resources</code></summary>
+    
+    Response
+    200 OK
+    List of resources
+
+</details>
+
+<details>
+    <summary><code>GET /gamedata/production-buildings</code></summary>
+    
+    Response
+    200 OK
+    List of production buildings
+
+</details>
+
+### Storage
+
+<details>
+    <summary><code>GET /storage</code></summary>
+    
+    Response
+    200 OK
+    List of storage resources
+
+</details>
+
+<details>
+    <summary><code>POST /storage/buy</code></summary>
+    Request
+    {
+        resourceId: number,
+        quantity: number
+    }
+
+    Response
+    200 OK
+
+</details>
+
+<details>
+    <summary><code>POST /storage/sell</code></summary>
+    Request
+    {
+        resourceId: number,
+        quantity: number
     }
 
     Response
