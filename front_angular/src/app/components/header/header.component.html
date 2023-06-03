@@ -1,27 +1,27 @@
-<header class="w-full sticky bg-white">
-  <nav class="h-12 flex justify-between items-center px-5">
+<header>
+  <nav class="d-flex flex-row justify-content-between align-items-center">
     <a [routerLink]="this.authService.isLoggedIn() ? ['/home'] : ['/']">
-      <h2 class="text-lg">Your Own Boss</h2>
+      <h2>Your Own Boss</h2>
     </a>
 
-    <ul class="flex flex-row">
+    <ul class="d-flex flex-row align-items-center">
       <ng-template [ngIf]="!this.authService.isLoggedIn()">
-        <li class="mr-2">
+        <li class="btn btn-outline-primary">
           <a routerLink="/signup">Signup</a>
         </li>
         <li>
-          <a routerLink="/login">Login</a>
+          <a class="btn btn-primary" routerLink="/login">Login</a>
         </li>
       </ng-template>
 
       <ng-template [ngIf]="this.authService.isLoggedIn()">
-        <li class="mr-4">
+        <li>
           <a routerLink="/storage">Storage</a>
         </li>
-        <li class="mr-4">
+        <li>
           <a routerLink="/account">{{ this.authService.user.username }}</a>
         </li>
-        <li class="mr-4">{{ this.authService.user.companyMoney }} $</li>
+        <li>{{ this.authService.user.companyMoney }} $</li>
         <li style="cursor: pointer" (click)="logout()">Logout</li>
       </ng-template>
     </ul>
