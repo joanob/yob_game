@@ -9,12 +9,14 @@ public class UserController : ControllerBase
 {
     private readonly IConfiguration _config;
     private IUserService _userService;
+    private IStorageService _storageService;
     private readonly string jwtKey;
 
-    public UserController(IConfiguration config, IUserService userService)
+    public UserController(IConfiguration config, IUserService userService, IStorageService storageService)
     {
         _config = config;
         _userService = userService;
+        _storageService = storageService;
 
         var configJwtKey = _config["Jwt:Key"];
         if (configJwtKey == null)
@@ -46,6 +48,8 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userService.Login(cmd.Username, cmd.Password);
+
+            await _storageService.CreateAllUserStorage(user.Id);
 
             var token = JwtUtils.generateToken(user, jwtKey);
 

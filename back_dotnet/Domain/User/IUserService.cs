@@ -9,4 +9,6 @@ public interface IUserService
     Task<User> GetUserById(int id);
 
     Task UpdateCompanyName(int userId, string companyName);
+
+    Task UpdateCompanyMoney(int userId, int money);
 }

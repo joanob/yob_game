@@ -21,11 +21,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Repositories
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IStorageRepository, StorageRepository>();
 
 // Services
 
 builder.Services.AddSingleton<IGameDataService, GameDataService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IStorageService, StorageService>();
+builder.Services.AddScoped<IMarketService, MarketService>();
 
 // Controllers
 

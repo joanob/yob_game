@@ -5,6 +5,8 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './auth/auth.guard';
 import { CompanyNameGuard } from './auth/company-name.guard';
 
+const guards = [AuthGuard, CompanyNameGuard];
+
 const routes: Routes = [
   {
     path: 'signup',
@@ -17,13 +19,19 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-    canActivate: [AuthGuard, CompanyNameGuard],
+    canActivate: guards,
   },
   {
     path: 'account',
     loadChildren: () =>
       import('./account/account.module').then((m) => m.AccountModule),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'storage',
+    loadChildren: () =>
+      import('./storage/storage.module').then((m) => m.StorageModule),
+    canActivate: guards,
   },
 ];
 

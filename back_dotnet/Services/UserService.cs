@@ -46,4 +46,13 @@ public class UserService : IUserService
         }
         await _userRepository.UpdateCompanyName(userId, companyName);
     }
+
+    public async Task UpdateCompanyMoney(int userId, int money)
+    {
+        if (money < 0)
+        {
+            throw new Exception("Money cannot be negative");
+        }
+        await _userRepository.UpdateCompanyMoney(userId, money);
+    }
 }

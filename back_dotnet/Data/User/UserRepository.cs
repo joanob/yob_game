@@ -70,4 +70,18 @@ public class UserRepository : IUserRepository
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task UpdateCompanyMoney(int userId, int money)
+    {
+        var user = await _context.Users.FindAsync(userId);
+
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        user.CompanyMoney = (uint)money;
+
+        await _context.SaveChangesAsync();
+    }
 }

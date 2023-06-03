@@ -1,0 +1,18 @@
+<table class="table-auto mx-5">
+  <thead>
+    <tr class="text-left">
+      <th class="px-2">Name</th>
+      <th class="px-2">Quantity</th>
+      <th class="px-2">Price</th>
+      <th class="px-2">Buy</th>
+      <th class="px-2">Sell</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let storage of this.storageService.getStorageAsList()"
+      app-resource-card
+      [resourceStorage]="storage"
+    ></tr>
+  </tbody>
+</table>

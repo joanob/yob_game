@@ -9,4 +9,6 @@ public interface IUserRepository
     Task<User> GetById(int id);
 
     Task UpdateCompanyName(int userId, string companyName);
+
+    Task UpdateCompanyMoney(int userId, int money);
 }
