@@ -15,14 +15,37 @@
       </ng-template>
 
       <ng-template [ngIf]="this.authService.isLoggedIn()">
-        <li>
-          <a routerLink="/storage">Storage</a>
-        </li>
-        <li>
-          <a routerLink="/account">{{ this.authService.user.username }}</a>
-        </li>
         <li>{{ this.authService.user.companyMoney }} $</li>
-        <li style="cursor: pointer" (click)="logout()">Logout</li>
+        <li>
+          <div class="dropdown">
+            <button
+              class="btn dropdown-toggle d-flex flex-row align-items-center"
+              type="button"
+              id="header-avatar-dropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <div class="header-avatar">
+                {{ this.authService.user.username.slice(0, 2) }}
+              </div>
+            </button>
+            <ul
+              class="dropdown-menu text-end"
+              aria-labelledby="header-avatar-dropdown"
+            >
+              <li class="dropdown-item">
+                <a routerLink="/account/settings">Settings</a>
+              </li>
+              <li
+                class="dropdown-item text-danger"
+                style="cursor: pointer"
+                (click)="logout()"
+              >
+                Logout
+              </li>
+            </ul>
+          </div>
+        </li>
       </ng-template>
     </ul>
   </nav>
