@@ -9,13 +9,15 @@ import { CookieService } from 'ngx-cookie-service';
 import { HeaderComponent } from './components/header/header.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
+import { FooterNavbarComponent } from './components/footer-navbar/footer-navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SignupComponent,
-    LoginComponent
+    LoginComponent,
+    FooterNavbarComponent
   ],
   imports: [
     BrowserModule,
