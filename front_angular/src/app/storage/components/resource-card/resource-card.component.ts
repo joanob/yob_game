@@ -9,11 +9,6 @@ import { Resource } from 'src/app/types/Resource';
 })
 export class ResourceCardComponent {
   @Input() resource: Resource;
-  public quantity: number;
 
   constructor(public storageService: StorageService) {}
-
-  ngOnInit() {
-    this.quantity = this.storageService.storage[this.resource.id];
-  }
 }

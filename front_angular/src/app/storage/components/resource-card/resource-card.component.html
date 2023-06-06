@@ -4,7 +4,12 @@
     <span>{{ this.resource.price }} $</span>
   </div>
   <div class="d-flex flex-row justify-content-between">
-    <span>{{ this.quantity || 0 }}</span>
-    <span>{{ this.resource.price * this.quantity || 0 }} $</span>
+    <span>{{ this.storageService.storage[this.resource.id] || 0 }}</span>
+    <span
+      >{{
+        this.storageService.storage[this.resource.id] * this.resource.price || 0
+      }}
+      $</span
+    >
   </div>
 </div>
