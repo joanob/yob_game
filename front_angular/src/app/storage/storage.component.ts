@@ -8,8 +8,5 @@ import { StorageService } from '../services/storage.service';
   styleUrls: ['./storage.component.scss'],
 })
 export class StorageComponent {
-  constructor(
-    public gamedataService: GamedataService,
-    public storageService: StorageService
-  ) {}
+  constructor(public gamedataService: GamedataService) {}
 }

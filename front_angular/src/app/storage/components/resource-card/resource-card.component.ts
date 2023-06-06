@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { GamedataService } from 'src/app/services/gamedata.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { Resource } from 'src/app/types/Resource';
 
 @Component({
   selector: '[app-resource-card]',
@@ -7,10 +8,12 @@ import { GamedataService } from 'src/app/services/gamedata.service';
   styleUrls: ['./resource-card.component.scss'],
 })
 export class ResourceCardComponent {
-  @Input() resourceStorage: { resourceId: number; quantity: number } = {
-    resourceId: 0,
-    quantity: 0,
-  };
+  @Input() resource: Resource;
+  public quantity: number;
 
-  constructor(public gamedataService: GamedataService) {}
+  constructor(public storageService: StorageService) {}
+
+  ngOnInit() {
+    this.quantity = this.storageService.storage[this.resource.id];
+  }
 }

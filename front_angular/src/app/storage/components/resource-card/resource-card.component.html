@@ -1,9 +1,10 @@
-<td class="px-2">
-  {{ this.gamedataService.getResourceById(resourceStorage.resourceId).name }}
-</td>
-<td class="px-2">{{ resourceStorage.quantity }}</td>
-<td class="px-2">
-  {{ this.gamedataService.getResourceById(resourceStorage.resourceId).price }} $
-</td>
-<td class="px-2"></td>
-<td class="px-2"></td>
+<div class="p-2 border rounded border-primary-subtle">
+  <div class="d-flex flex-row justify-content-between">
+    <span>{{ this.resource.name }}</span>
+    <span>{{ this.resource.price }} $</span>
+  </div>
+  <div class="d-flex flex-row justify-content-between">
+    <span>{{ this.quantity || 0 }}</span>
+    <span>{{ this.resource.price * this.quantity || 0 }} $</span>
+  </div>
+</div>

@@ -4,6 +4,11 @@ import { UserService } from '../auth/user.service';
 import { environment } from 'src/environment/environment';
 import { GamedataService } from './gamedata.service';
 
+export interface ResourceStorage {
+  resourceId: number;
+  quantity: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -31,7 +36,7 @@ export class StorageService {
       });
   }
 
-  getStorageAsList(): { resourceId: number; quantity: number }[] {
+  getResourcesStorage(): ResourceStorage[] {
     return Object.keys(this.storage).map((resourceId) => ({
       resourceId: parseInt(resourceId),
       quantity: this.storage[parseInt(resourceId)],
