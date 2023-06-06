@@ -36,7 +36,7 @@ public class StorageController : ControllerBase
     }
 
     [HttpPost("buy")]
-    public async Task<ActionResult> BuyResources(BuySellStorageCmd cmd)
+    public async Task<ActionResult> BuyResources([FromBody] BuySellStorageCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -57,7 +57,7 @@ public class StorageController : ControllerBase
     }
 
     [HttpPost("sell")]
-    public async Task<ActionResult> SellResources(BuySellStorageCmd cmd)
+    public async Task<ActionResult> SellResources([FromBody] BuySellStorageCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 

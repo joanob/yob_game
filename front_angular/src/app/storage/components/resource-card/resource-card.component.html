@@ -1,15 +1,25 @@
 <div class="p-2 border rounded border-primary-subtle">
-  <div class="d-flex flex-row justify-content-between">
-    <span>{{ this.resource.name }}</span>
-    <span>{{ this.resource.price }} $</span>
-  </div>
+  <div class="text-center">{{ this.resource.name }}</div>
   <div class="d-flex flex-row justify-content-between">
     <span>{{ this.storageService.storage[this.resource.id] || 0 }}</span>
-    <span
-      >{{
-        this.storageService.storage[this.resource.id] * this.resource.price || 0
-      }}
-      $</span
-    >
+    <span>{{ this.resource.price }} $ </span>
+  </div>
+  <div class="d-flex flex-row gap-1 align-items-center my-2">
+    <button class="p-1" (click)="sellMax()">Sell max</button>
+    <div class="w-100 d-flex flex-column justify-content-end">
+      <div class="text-center">{{ this.resource.price * inputQuantity }} $</div>
+      <input
+        class="w-100 px-2"
+        type="number"
+        name="inputQuantity"
+        min="0"
+        [(ngModel)]="inputQuantity"
+      />
+    </div>
+    <button class="p-1" (click)="buyMax()">Buy max</button>
+  </div>
+  <div class="d-flex flex-row gap-2">
+    <button class="w-100" (click)="sellResources()">Sell</button>
+    <button class="w-100" (click)="buyResources()">Buy</button>
   </div>
 </div>
