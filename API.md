@@ -177,3 +177,44 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
     200 OK
 
 </details>
+
+### Production
+
+<details>
+    <summary><code>GET /production</code></summary>
+    
+    Response
+    200 OK
+    List of production
+
+</details>
+
+<details>
+    <summary><code>GET /production/{id}</code></summary>
+    
+    Response
+    200 OK
+    Production with that id
+
+</details>
+
+<details>
+    <summary><code>POST /production/{id}</code></summary>
+    Request 
+    {
+        processId: number,
+        quantity: number
+    }
+
+    Response
+    200 OK
+
+</details>
+
+<details>
+    <summary><code>DELETE /production/{id}</code></summary>
+
+    Response
+    200 OK
+
+</details>
