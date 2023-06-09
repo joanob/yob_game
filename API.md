@@ -68,6 +68,8 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 <details>
     <summary><code>POST /signup</code></summary>
 
+    Create user with empty company name, initial money, initial properties and initial storage
+
     Anonymous
 
     Request
@@ -83,6 +85,8 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 
 <details>
     <summary><code>POST /login</code></summary>
+
+    Create session tokens and check all storage created
 
     Anonymous
 
@@ -103,6 +107,8 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 <details>
     <summary><code>GET /session</code></summary>
     
+    Check session tokens are valid
+    
     Response
     200 OK
     User
@@ -110,10 +116,13 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 </details>
 
 <details>
-    <summary><code>POST /company/name</code></summary>
+    <summary><code>PUT /company/name</code></summary>
+
+    Update company name
+
     Request
     {
-        companyName: string 
+        companyName: string
     }
 
     Response
@@ -123,8 +132,10 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 
 ### Gamedata
 
+<code>/gamedata</code>
+
 <details>
-    <summary><code>GET /gamedata/resources</code></summary>
+    <summary><code>GET /resources</code></summary>
     
     Response
     200 OK
@@ -133,7 +144,7 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 </details>
 
 <details>
-    <summary><code>GET /gamedata/production-buildings</code></summary>
+    <summary><code>GET /production-buildings</code></summary>
     
     Response
     200 OK
@@ -143,17 +154,28 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 
 ### Storage
 
+<code>/storage</code>
+
+- UserId: number
+- ResourceId: number
+- Quantity: number
+
 <details>
-    <summary><code>GET /storage</code></summary>
-    
+    <summary><code>GET /</code></summary>
+
+    Get all storage
+
     Response
     200 OK
-    List of storage resources
+    List of storage
 
 </details>
 
 <details>
-    <summary><code>POST /storage/buy</code></summary>
+    <summary><code>POST /buy</code></summary>
+
+    Buy resources
+
     Request
     {
         resourceId: number,
@@ -166,12 +188,43 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 </details>
 
 <details>
-    <summary><code>POST /storage/sell</code></summary>
+    <summary><code>POST /sell</code></summary>
+
+    Sell resources
+
     Request
     {
         resourceId: number,
         quantity: number
     }
+
+    Response
+    200 OK
+
+</details>
+
+### Properties
+
+<code>/properties</code>
+
+- UserId: number
+- ProductionBuildingId: number
+
+<details>
+    <summary><code>GET /</code></summary>
+
+    Get all properties
+
+    Response
+    200 OK
+    List of properties owned
+
+</details>
+
+<details>
+    <summary><code>POST /{id}</code></summary>
+
+    Buy property
 
     Response
     200 OK
@@ -180,9 +233,20 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 
 ### Production
 
+<code>/production</code>
+
+- UserId: number
+- ProductionBuildingId: number
+- ProductionProcessId: number
+- Quantity: number
+- Start: number
+- End: number
+
 <details>
-    <summary><code>GET /production</code></summary>
-    
+    <summary><code>GET /</code></summary>
+
+    Get all productions
+
     Response
     200 OK
     List of production
@@ -190,8 +254,10 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 </details>
 
 <details>
-    <summary><code>GET /production/{id}</code></summary>
-    
+    <summary><code>GET /{id}</code></summary>
+
+    Get production
+
     Response
     200 OK
     Production with that id
@@ -199,7 +265,10 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 </details>
 
 <details>
-    <summary><code>POST /production/{id}</code></summary>
+    <summary><code>POST /{id}</code></summary>
+    
+    Start production
+    
     Request 
     {
         processId: number,
@@ -212,7 +281,9 @@ All non anonymous requests require a X-Access-Token Cookie with the JWT
 </details>
 
 <details>
-    <summary><code>DELETE /production/{id}</code></summary>
+    <summary><code>DELETE /{id}</code></summary>
+
+    End production
 
     Response
     200 OK

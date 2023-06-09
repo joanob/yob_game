@@ -86,7 +86,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("company/name")]
+    [HttpPut("company/name")]
     public async Task<ActionResult> UpdateCompanyName([FromBody] UpdateCompanyNameCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];

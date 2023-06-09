@@ -57,6 +57,7 @@ To have the reference across all technologies I will have the resources and buil
 
 #### Farm
 
-| Name       | Uses                  | Time | Creates   |
-| ---------- | --------------------- | ---- | --------- |
-| Apple tree | 1x Seed <br> 2x Water | 10s  | 10x Apple |
+| Name        | Uses                  | Time  | Creates   |
+| ----------- | --------------------- | ----- | --------- |
+| Apple tree  | 1x Seed <br> 2x Water | 10s   | 10x Apple |
+| Seed drying | 1x Apple              | 500ms | 2x Seed   |
