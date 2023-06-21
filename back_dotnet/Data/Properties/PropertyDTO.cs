@@ -4,5 +4,5 @@ namespace Data;
 
 public class PropertyDTO : Property
 {
-    public PropertyDTO(int userId, int productionBuildingId) : base(userId, productionBuildingId) { }
+    public PropertyDTO(int Id, int userId, int productionBuildingId) : base(Id, userId, productionBuildingId) { }
 }

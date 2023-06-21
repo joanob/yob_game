@@ -13,7 +13,7 @@ public class PropertiesRepository : IPropertiesRepository
 
     public async Task CreateProperty(Property property)
     {
-        PropertyDTO propertyDTO = new PropertyDTO(property.UserId, property.ProductionBuildingId);
+        PropertyDTO propertyDTO = new PropertyDTO(0, property.UserId, property.ProductionBuildingId);
 
         try
         {
@@ -35,7 +35,7 @@ public class PropertiesRepository : IPropertiesRepository
 
         foreach (var dto in dtos)
         {
-            properties.Add(new Property(dto.UserId, dto.ProductionBuildingId));
+            properties.Add(new Property(dto.Id, dto.UserId, dto.ProductionBuildingId));
         }
 
         return Task.FromResult(properties);
@@ -49,7 +49,7 @@ public class PropertiesRepository : IPropertiesRepository
 
         foreach (var dto in dtos)
         {
-            properties.Add(new Property(dto.UserId, dto.ProductionBuildingId));
+            properties.Add(new Property(dto.Id, dto.UserId, dto.ProductionBuildingId));
         }
 
         return Task.FromResult(properties);

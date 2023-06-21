@@ -65,7 +65,7 @@ public class PropertyController : ControllerBase
 
         try
         {
-            await _propertyService.BuyProperty(new Property((int)userId, cmd.ProdBuildingId));
+            await _propertyService.BuyProperty(new Property(0, (int)userId, cmd.ProdBuildingId));
             return Ok();
         }
         catch (System.Exception)
