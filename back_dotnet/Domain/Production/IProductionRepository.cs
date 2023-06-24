@@ -2,11 +2,11 @@ namespace Domain;
 
 public interface IProductionRepository
 {
-    Task CreateProduction(Production production);
+    void CreateProduction(Production production);
 
-    Task<List<Production>> GetAllProduction(int userId);
+    List<Production> GetAllProduction(int userId);
 
-    Task<Production> GetProduction(int userId, int productionBuildingId);
+    Production GetProduction(int userId, int productionBuildingId);
 
-    Task EndProduction(int userId, int productionBuildingId);
+    void EndProduction(int userId, int productionBuildingId);
 }

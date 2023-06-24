@@ -15,38 +15,38 @@ public class MarketService : IMarketService
         _userService = userService;
     }
 
-    public async Task BuyResources(int userId, int resourceId, int quantity)
+    public void BuyResources(int userId, int resourceId, int quantity)
     {
         var resource = _gamedataService.GetResourceById(resourceId);
         var cost = resource.Price * quantity;
 
-        var user = await _userService.GetUserById(userId);
+        var user = _userService.GetUserById(userId);
         if (user.CompanyMoney < cost)
         {
             throw new Exception("Not enough money");
         }
 
         user.CompanyMoney -= (uint)cost;
-        await _userService.UpdateCompanyMoney(user.Id, (int)user.CompanyMoney);
+        _userService.UpdateCompanyMoney(user.Id, (int)user.CompanyMoney);
 
-        await _storageService.AddResourcesToStorage(new Storage(user.Id, resourceId, quantity));
+        _storageService.AddResourcesToStorage(new Storage(user.Id, resourceId, quantity));
     }
 
-    public async Task SellResources(int userId, int resourceId, int quantity)
+    public void SellResources(int userId, int resourceId, int quantity)
     {
         var resource = _gamedataService.GetResourceById(resourceId);
         var cost = resource.Price * quantity;
 
-        var storage = await _storageService.GetResourceStorage(userId, resourceId);
+        var storage = _storageService.GetResourceStorage(userId, resourceId);
         if (storage.Quantity < quantity)
         {
             throw new Exception("Not enough resources");
         }
 
-        var user = await _userService.GetUserById(userId);
+        var user = _userService.GetUserById(userId);
         user.CompanyMoney += (uint)cost;
-        await _userService.UpdateCompanyMoney(user.Id, (int)user.CompanyMoney);
+        _userService.UpdateCompanyMoney(user.Id, (int)user.CompanyMoney);
 
-        await _storageService.SubResourcesToStorage(new Storage(user.Id, resourceId, quantity));
+        _storageService.SubResourcesToStorage(new Storage(user.Id, resourceId, quantity));
     }
 }

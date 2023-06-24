@@ -13,45 +13,45 @@ public class StorageService : IStorageService
         _gamedataService = gameDataService;
     }
 
-    public async Task CreateAllUserStorage(int userId)
+    public void CreateAllUserStorage(int userId)
     {
         var resources = _gamedataService.GetAllResources();
-        var existingStorage = await _storageRepository.GetAllStorage(userId);
+        var existingStorage = _storageRepository.GetAllStorage(userId);
 
         foreach (var resource in resources)
         {
             if (existingStorage.Find(s => s.ResourceId == resource.Id) == null)
             {
-                await _storageRepository.CreateResourceStorage(new Storage(userId, resource.Id, 0));
+                _storageRepository.CreateResourceStorage(new Storage(userId, resource.Id, 0));
             }
         }
 
     }
 
-    public async Task<List<Storage>> GetAllStorage(int userId)
+    public List<Storage> GetAllStorage(int userId)
     {
-        return await _storageRepository.GetAllStorage(userId);
+        return _storageRepository.GetAllStorage(userId);
     }
 
-    public async Task<Storage> GetResourceStorage(int userId, int resourceId)
+    public Storage GetResourceStorage(int userId, int resourceId)
     {
-        return await _storageRepository.GetResourceStorage(userId, resourceId);
+        return _storageRepository.GetResourceStorage(userId, resourceId);
     }
 
-    public async Task AddResourcesToStorage(Storage storage)
+    public void AddResourcesToStorage(Storage storage)
     {
-        await _storageRepository.AddResourcesToStorage(storage);
+        _storageRepository.AddResourcesToStorage(storage);
     }
 
-    public async Task SubResourcesToStorage(Storage storage)
+    public void SubResourcesToStorage(Storage storage)
     {
-        var stored = await _storageRepository.GetResourceStorage(storage.UserId, storage.ResourceId);
+        var stored = _storageRepository.GetResourceStorage(storage.UserId, storage.ResourceId);
 
         if (stored.Quantity < storage.Quantity)
         {
             throw new Exception("Not enough resources in storage");
         }
 
-        await _storageRepository.SubResourcesToStorage(storage);
+        _storageRepository.SubResourcesToStorage(storage);
     }
 }

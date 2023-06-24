@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Domain;
+using Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Controllers;
@@ -8,13 +9,15 @@ namespace Controllers;
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _config;
+    private AppDbContext _dbContext;
     private IUserService _userService;
     private IStorageService _storageService;
     private readonly string jwtKey;
 
-    public UserController(IConfiguration config, IUserService userService, IStorageService storageService)
+    public UserController(IConfiguration config, AppDbContext dbContext, IUserService userService, IStorageService storageService)
     {
         _config = config;
+        _dbContext = dbContext;
         _userService = userService;
         _storageService = storageService;
 
@@ -28,11 +31,12 @@ public class UserController : ControllerBase
 
     [HttpPost("signup")]
     [AllowAnonymous]
-    public async Task<ActionResult> Signup([FromBody] UserSignupLoginCmd cmd)
+    public ActionResult Signup([FromBody] UserSignupLoginCmd cmd)
     {
         try
         {
-            await _userService.Signup(cmd.Username, cmd.Password);
+            _userService.Signup(cmd.Username, cmd.Password);
+            _dbContext.SaveChanges();
             return Ok();
         }
         catch (System.Exception)
@@ -43,13 +47,13 @@ public class UserController : ControllerBase
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<User>> Login([FromBody] UserSignupLoginCmd cmd)
+    public ActionResult<User> Login([FromBody] UserSignupLoginCmd cmd)
     {
         try
         {
-            var user = await _userService.Login(cmd.Username, cmd.Password);
+            var user = _userService.Login(cmd.Username, cmd.Password);
 
-            await _storageService.CreateAllUserStorage(user.Id);
+            _storageService.CreateAllUserStorage(user.Id);
 
             var token = JwtUtils.generateToken(user, jwtKey);
 
@@ -66,7 +70,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("session")]
-    public async Task<ActionResult<User>> GetLoggedInUser()
+    public ActionResult<User> GetLoggedInUser()
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -77,7 +81,7 @@ public class UserController : ControllerBase
 
         try
         {
-            return await _userService.GetUserById((int)userId);
+            return _userService.GetUserById((int)userId);
 
         }
         catch (System.Exception)
@@ -87,7 +91,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("company/name")]
-    public async Task<ActionResult> UpdateCompanyName([FromBody] UpdateCompanyNameCmd cmd)
+    public ActionResult UpdateCompanyName([FromBody] UpdateCompanyNameCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -98,7 +102,8 @@ public class UserController : ControllerBase
 
         try
         {
-            await _userService.UpdateCompanyName((int)userId, cmd.CompanyName);
+            _userService.UpdateCompanyName((int)userId, cmd.CompanyName);
+            _dbContext.SaveChanges();
             return Ok();
         }
         catch (System.Exception)

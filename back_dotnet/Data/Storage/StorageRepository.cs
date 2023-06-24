@@ -11,22 +11,21 @@ public class StorageRepository : IStorageRepository
         _context = context;
     }
 
-    public async Task CreateResourceStorage(Storage storage)
+    public void CreateResourceStorage(Storage storage)
     {
         StorageDTO storageDTO = new StorageDTO(storage.UserId, storage.ResourceId, storage.Quantity);
 
         try
         {
             _context.Storage.Add(storageDTO);
-            await _context.SaveChangesAsync();
         }
-        catch (System.Exception)
+        catch (Exception)
         {
             throw;
         }
     }
 
-    public Task<List<Storage>> GetAllStorage(int userId)
+    public List<Storage> GetAllStorage(int userId)
     {
         var dtos = _context.Storage.Where(s => s.UserId == userId).ToList();
 
@@ -37,26 +36,24 @@ public class StorageRepository : IStorageRepository
             storages.Add(new Storage(dto.UserId, dto.ResourceId, dto.Quantity));
         }
 
-        return Task.FromResult(storages);
+        return storages;
     }
 
-    public Task<Storage> GetResourceStorage(int userId, int resourceId)
+    public Storage GetResourceStorage(int userId, int resourceId)
     {
         var dto = _context.Storage.Where(s => s.UserId == userId && s.ResourceId == resourceId).Single();
 
-        return Task.FromResult(new Storage(dto.UserId, dto.ResourceId, dto.Quantity));
+        return new Storage(dto.UserId, dto.ResourceId, dto.Quantity);
     }
 
-    public async Task AddResourcesToStorage(Storage storage)
+    public void AddResourcesToStorage(Storage storage)
     {
         var dto = _context.Storage.Where(s => s.UserId == storage.UserId && s.ResourceId == storage.ResourceId).Single();
 
         dto.Quantity += storage.Quantity;
-
-        await _context.SaveChangesAsync();
     }
 
-    public async Task SubResourcesToStorage(Storage storage)
+    public void SubResourcesToStorage(Storage storage)
     {
         var dto = _context.Storage.Where(s => s.UserId == storage.UserId && s.ResourceId == storage.ResourceId).Single();
 
@@ -66,7 +63,5 @@ public class StorageRepository : IStorageRepository
         }
 
         dto.Quantity -= storage.Quantity;
-
-        await _context.SaveChangesAsync();
     }
 }

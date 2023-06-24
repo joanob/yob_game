@@ -11,14 +11,13 @@ public class ProductionRepository : IProductionRepository
         _context = context;
     }
 
-    public async Task CreateProduction(Production production)
+    public void CreateProduction(Production production)
     {
         ProductionDTO productionDTO = new ProductionDTO(production.UserId, production.ProductionBuildingId, production.ProductionProcessId, production.Quantity, production.Start, production.End);
 
         try
         {
             _context.Production.Add(productionDTO);
-            await _context.SaveChangesAsync();
         }
         catch (System.Exception)
         {
@@ -26,7 +25,7 @@ public class ProductionRepository : IProductionRepository
         }
     }
 
-    public Task<List<Production>> GetAllProduction(int userId)
+    public List<Production> GetAllProduction(int userId)
     {
         var dtos = _context.Production.Where(p => p.UserId == userId).ToList();
 
@@ -37,21 +36,20 @@ public class ProductionRepository : IProductionRepository
             production.Add(new Production(dto.UserId, dto.ProductionBuildingId, dto.ProductionProcessId, dto.Quantity, dto.Start, dto.End));
         }
 
-        return Task.FromResult(production);
+        return production;
     }
 
-    public Task<Production> GetProduction(int userId, int productionBuildingId)
+    public Production GetProduction(int userId, int productionBuildingId)
     {
         var dto = _context.Production.Where(p => p.UserId == userId && p.ProductionBuildingId == productionBuildingId).Single();
 
-        return Task.FromResult(new Production(dto.UserId, dto.ProductionBuildingId, dto.ProductionProcessId, dto.Quantity, dto.Start, dto.End));
+        return new Production(dto.UserId, dto.ProductionBuildingId, dto.ProductionProcessId, dto.Quantity, dto.Start, dto.End);
     }
 
-    public async Task EndProduction(int userId, int productionBuildingId)
+    public void EndProduction(int userId, int productionBuildingId)
     {
         var dto = _context.Production.Where(p => p.UserId == userId && p.ProductionBuildingId == productionBuildingId).Single();
 
         _context.Remove(dto);
-        await _context.SaveChangesAsync();
     }
 }

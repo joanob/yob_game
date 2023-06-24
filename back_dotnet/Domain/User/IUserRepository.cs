@@ -2,13 +2,13 @@ namespace Domain;
 
 public interface IUserRepository
 {
-    Task Signup(User user, string password);
+    void Signup(User user, string password);
 
-    Task<User> Login(string username, string password);
+    User Login(string username, string password);
 
-    Task<User> GetById(int id);
+    User GetById(int id);
 
-    Task UpdateCompanyName(int userId, string companyName);
+    void UpdateCompanyName(int userId, string companyName);
 
-    Task UpdateCompanyMoney(int userId, int money);
+    void UpdateCompanyMoney(int userId, int money);
 }

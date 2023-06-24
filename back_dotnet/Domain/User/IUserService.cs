@@ -2,13 +2,13 @@ namespace Domain;
 
 public interface IUserService
 {
-    Task Signup(string username, string password);
+    void Signup(string username, string password);
 
-    Task<User> Login(string username, string password);
+    User Login(string username, string password);
 
-    Task<User> GetUserById(int id);
+    User GetUserById(int id);
 
-    Task UpdateCompanyName(int userId, string companyName);
+    void UpdateCompanyName(int userId, string companyName);
 
-    Task UpdateCompanyMoney(int userId, int money);
+    void UpdateCompanyMoney(int userId, int money);
 }

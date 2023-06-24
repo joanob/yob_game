@@ -11,7 +11,7 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public Task<User> Login(string username, string password)
+    public User Login(string username, string password)
     {
         var user = _context.Users.Where(u => u.Username == username).FirstOrDefault();
 
@@ -22,13 +22,13 @@ public class UserRepository : IUserRepository
 
         if (BCrypt.Net.BCrypt.Verify(password, user.Password))
         {
-            return Task.FromResult(new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney));
+            return new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney);
         }
 
         throw new Exception("Incorrect password for username: " + username);
     }
 
-    public async Task Signup(User user, string password)
+    public void Signup(User user, string password)
     {
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
@@ -37,17 +37,16 @@ public class UserRepository : IUserRepository
         try
         {
             _context.Users.Add(userdto);
-            await _context.SaveChangesAsync();
         }
-        catch (System.Exception)
+        catch (Exception)
         {
             throw;
         }
     }
 
-    public async Task<User> GetById(int id)
+    public User GetById(int id)
     {
-        var user = await _context.Users.FindAsync(id);
+        var user = _context.Users.Find(id);
 
         if (user == null)
         {
@@ -57,9 +56,9 @@ public class UserRepository : IUserRepository
         return new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney);
     }
 
-    public async Task UpdateCompanyName(int userId, string companyName)
+    public void UpdateCompanyName(int userId, string companyName)
     {
-        var user = await _context.Users.FindAsync(userId);
+        var user = _context.Users.Find(userId);
 
         if (user == null)
         {
@@ -67,13 +66,11 @@ public class UserRepository : IUserRepository
         }
 
         user.CompanyName = companyName;
-
-        await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateCompanyMoney(int userId, int money)
+    public void UpdateCompanyMoney(int userId, int money)
     {
-        var user = await _context.Users.FindAsync(userId);
+        var user = _context.Users.Find(userId);
 
         if (user == null)
         {
@@ -81,7 +78,5 @@ public class UserRepository : IUserRepository
         }
 
         user.CompanyMoney = (uint)money;
-
-        await _context.SaveChangesAsync();
     }
 }

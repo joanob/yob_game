@@ -15,11 +15,11 @@ public class PropertiesService : IPropertiesService
         this._propertiesRepository = propertiesRepository;
     }
 
-    public async Task BuyProperty(Property property)
+    public void BuyProperty(Property property)
     {
         try
         {
-            var user = await _userService.GetUserById(property.UserId);
+            var user = _userService.GetUserById(property.UserId);
 
             var prodBuilding = _gamedataService.GetProductionBuildingById(property.ProductionBuildingId);
 
@@ -30,9 +30,9 @@ public class PropertiesService : IPropertiesService
 
             user.CompanyMoney -= (uint)prodBuilding.BuildCost;
 
-            await _userService.UpdateCompanyMoney(user.Id, (int)user.CompanyMoney);
+            _userService.UpdateCompanyMoney(user.Id, (int)user.CompanyMoney);
 
-            await _propertiesRepository.CreateProperty(property);
+            _propertiesRepository.CreateProperty(property);
         }
         catch (System.Exception)
         {
@@ -41,12 +41,12 @@ public class PropertiesService : IPropertiesService
         }
     }
 
-    public Task<List<Property>> GetAllProperties(int userId)
+    public List<Property> GetAllProperties(int userId)
     {
         return _propertiesRepository.GetAllProperties(userId);
     }
 
-    public Task<List<Property>> GetPropertiesByProductionBuildingId(int userId, int productionBuildingId)
+    public List<Property> GetPropertiesByProductionBuildingId(int userId, int productionBuildingId)
     {
         return _propertiesRepository.GetPropertiesByProductionBuildingId(userId, productionBuildingId);
     }
