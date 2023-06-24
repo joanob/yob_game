@@ -33,6 +33,12 @@ const routes: Routes = [
       import('./storage/storage.module').then((m) => m.StorageModule),
     canActivate: guards,
   },
+  {
+    path: 'production',
+    loadChildren: () =>
+      import('./production/production.module').then((m) => m.ProductionModule),
+    canActivate: guards,
+  },
 ];
 
 @NgModule({
