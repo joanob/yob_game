@@ -1,4 +1,5 @@
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data;
 
@@ -25,9 +26,9 @@ public class ProductionRepository : IProductionRepository
         }
     }
 
-    public List<Production> GetAllProduction(int userId)
+    public async Task<List<Production>> GetAllProduction(int userId)
     {
-        var dtos = _context.Production.Where(p => p.UserId == userId).ToList();
+        var dtos = await _context.Production.Where(p => p.UserId == userId).ToListAsync();
 
         var production = new List<Production>();
 
@@ -39,16 +40,16 @@ public class ProductionRepository : IProductionRepository
         return production;
     }
 
-    public Production GetProduction(int userId, int productionBuildingId)
+    public async Task<Production> GetProduction(int userId, int productionBuildingId)
     {
-        var dto = _context.Production.Where(p => p.UserId == userId && p.ProductionBuildingId == productionBuildingId).Single();
+        var dto = await _context.Production.Where(p => p.UserId == userId && p.ProductionBuildingId == productionBuildingId).SingleAsync();
 
         return new Production(dto.UserId, dto.ProductionBuildingId, dto.ProductionProcessId, dto.Quantity, dto.Start, dto.End);
     }
 
-    public void EndProduction(int userId, int productionBuildingId)
+    public async Task EndProduction(int userId, int productionBuildingId)
     {
-        var dto = _context.Production.Where(p => p.UserId == userId && p.ProductionBuildingId == productionBuildingId).Single();
+        var dto = await _context.Production.Where(p => p.UserId == userId && p.ProductionBuildingId == productionBuildingId).SingleAsync();
 
         _context.Remove(dto);
     }

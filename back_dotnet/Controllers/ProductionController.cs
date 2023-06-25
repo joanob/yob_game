@@ -7,17 +7,17 @@ namespace Controllers;
 [Route("api/production")]
 public class ProductionController : ControllerBase
 {
-    private AppDbContext _dbContext;
+    private AppDbContext _context;
     private IProductionService _productionService;
 
-    public ProductionController(AppDbContext dbContext, IProductionService productionService)
+    public ProductionController(AppDbContext context, IProductionService productionService)
     {
-        _dbContext = dbContext;
+        _context = context;
         this._productionService = productionService;
     }
 
     [HttpGet]
-    public ActionResult<List<Production>> GetAllProduction()
+    public async Task<ActionResult<List<Production>>> GetAllProduction()
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -28,7 +28,7 @@ public class ProductionController : ControllerBase
 
         try
         {
-            return _productionService.GetAllProduction((int)userId);
+            return await _productionService.GetAllProduction((int)userId);
         }
         catch (System.Exception)
         {
@@ -37,7 +37,7 @@ public class ProductionController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Production> GetProduction(int productionBuildingId)
+    public async Task<ActionResult<Production>> GetProduction(int productionBuildingId)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -48,7 +48,7 @@ public class ProductionController : ControllerBase
 
         try
         {
-            return _productionService.GetProduction((int)userId, productionBuildingId);
+            return await _productionService.GetProduction((int)userId, productionBuildingId);
         }
         catch (System.Exception)
         {
@@ -57,7 +57,7 @@ public class ProductionController : ControllerBase
     }
 
     [HttpPost("{id}")]
-    public ActionResult StartProduction(int productionBuildingId, [FromBody] StartProductionCmd cmd)
+    public async Task<ActionResult> StartProduction(int productionBuildingId, [FromBody] StartProductionCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -68,8 +68,8 @@ public class ProductionController : ControllerBase
 
         try
         {
-            _productionService.StartProduction((int)userId, productionBuildingId, cmd.ProcessId, cmd.Quantity);
-            _dbContext.SaveChanges();
+            await _productionService.StartProduction((int)userId, productionBuildingId, cmd.ProcessId, cmd.Quantity);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)
@@ -79,7 +79,7 @@ public class ProductionController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public ActionResult DeleteResource(int productionBuildingId)
+    public async Task<ActionResult> EndProduction(int productionBuildingId)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -90,8 +90,8 @@ public class ProductionController : ControllerBase
 
         try
         {
-            _productionService.EndProduction((int)userId, productionBuildingId);
-            _dbContext.SaveChanges();
+            await _productionService.EndProduction((int)userId, productionBuildingId);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)

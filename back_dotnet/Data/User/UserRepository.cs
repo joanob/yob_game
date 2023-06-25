@@ -1,4 +1,5 @@
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data;
 
@@ -9,23 +10,6 @@ public class UserRepository : IUserRepository
     public UserRepository(AppDbContext context)
     {
         _context = context;
-    }
-
-    public User Login(string username, string password)
-    {
-        var user = _context.Users.Where(u => u.Username == username).FirstOrDefault();
-
-        if (user == null)
-        {
-            throw new Exception("Not user found with username: " + username);
-        }
-
-        if (BCrypt.Net.BCrypt.Verify(password, user.Password))
-        {
-            return new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney);
-        }
-
-        throw new Exception("Incorrect password for username: " + username);
     }
 
     public void Signup(User user, string password)
@@ -44,9 +28,26 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public User GetById(int id)
+    public async Task<User> Login(string username, string password)
     {
-        var user = _context.Users.Find(id);
+        var user = await _context.Users.Where(u => u.Username == username).FirstOrDefaultAsync();
+
+        if (user == null)
+        {
+            throw new Exception("Not user found with username: " + username);
+        }
+
+        if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+        {
+            return new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney);
+        }
+
+        throw new Exception("Incorrect password for username: " + username);
+    }
+
+    public async Task<User> GetById(int id)
+    {
+        var user = await _context.Users.FindAsync(id);
 
         if (user == null)
         {
@@ -56,9 +57,9 @@ public class UserRepository : IUserRepository
         return new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney);
     }
 
-    public void UpdateCompanyName(int userId, string companyName)
+    public async Task UpdateCompanyName(int userId, string companyName)
     {
-        var user = _context.Users.Find(userId);
+        var user = await _context.Users.FindAsync(userId);
 
         if (user == null)
         {
@@ -68,9 +69,9 @@ public class UserRepository : IUserRepository
         user.CompanyName = companyName;
     }
 
-    public void UpdateCompanyMoney(int userId, int money)
+    public async Task UpdateCompanyMoney(int userId, int money)
     {
-        var user = _context.Users.Find(userId);
+        var user = await _context.Users.FindAsync(userId);
 
         if (user == null)
         {

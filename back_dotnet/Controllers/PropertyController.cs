@@ -7,17 +7,17 @@ namespace Controllers;
 [Route("api/property")]
 public class PropertyController : ControllerBase
 {
-    private AppDbContext _dbContext;
+    private AppDbContext _context;
     private IPropertiesService _propertyService;
 
-    public PropertyController(AppDbContext dbContext, IPropertiesService propertiesService)
+    public PropertyController(AppDbContext context, IPropertiesService propertiesService)
     {
-        _dbContext = dbContext;
+        _context = context;
         _propertyService = propertiesService;
     }
 
     [HttpGet]
-    public ActionResult<List<Property>> GetAllProperties()
+    public async Task<ActionResult<List<Property>>> GetAllProperties()
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -28,7 +28,7 @@ public class PropertyController : ControllerBase
 
         try
         {
-            return _propertyService.GetAllProperties((int)userId);
+            return await _propertyService.GetAllProperties((int)userId);
         }
         catch (System.Exception)
         {
@@ -37,7 +37,7 @@ public class PropertyController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<List<Property>> GetProperty(int productionBuildingId)
+    public async Task<ActionResult<List<Property>>> GetProperty(int productionBuildingId)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -48,7 +48,7 @@ public class PropertyController : ControllerBase
 
         try
         {
-            return _propertyService.GetPropertiesByProductionBuildingId((int)userId, productionBuildingId);
+            return await _propertyService.GetPropertiesByProductionBuildingId((int)userId, productionBuildingId);
         }
         catch (System.Exception)
         {
@@ -57,7 +57,7 @@ public class PropertyController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult BuyProperty([FromBody] BuyPropertyCmd cmd)
+    public async Task<ActionResult> BuyProperty([FromBody] BuyPropertyCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -68,8 +68,8 @@ public class PropertyController : ControllerBase
 
         try
         {
-            _propertyService.BuyProperty(new Property(0, (int)userId, cmd.ProdBuildingId));
-            _dbContext.SaveChanges();
+            await _propertyService.BuyProperty(new Property(0, (int)userId, cmd.ProdBuildingId));
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)

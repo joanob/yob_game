@@ -9,15 +9,15 @@ namespace Controllers;
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _config;
-    private AppDbContext _dbContext;
+    private AppDbContext _context;
     private IUserService _userService;
     private IStorageService _storageService;
     private readonly string jwtKey;
 
-    public UserController(IConfiguration config, AppDbContext dbContext, IUserService userService, IStorageService storageService)
+    public UserController(IConfiguration config, AppDbContext context, IUserService userService, IStorageService storageService)
     {
         _config = config;
-        _dbContext = dbContext;
+        _context = context;
         _userService = userService;
         _storageService = storageService;
 
@@ -31,12 +31,12 @@ public class UserController : ControllerBase
 
     [HttpPost("signup")]
     [AllowAnonymous]
-    public ActionResult Signup([FromBody] UserSignupLoginCmd cmd)
+    public async Task<ActionResult> Signup([FromBody] UserSignupLoginCmd cmd)
     {
         try
         {
             _userService.Signup(cmd.Username, cmd.Password);
-            _dbContext.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)
@@ -47,13 +47,15 @@ public class UserController : ControllerBase
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public ActionResult<User> Login([FromBody] UserSignupLoginCmd cmd)
+    public async Task<ActionResult<User>> Login([FromBody] UserSignupLoginCmd cmd)
     {
         try
         {
-            var user = _userService.Login(cmd.Username, cmd.Password);
+            var user = await _userService.Login(cmd.Username, cmd.Password);
 
-            _storageService.CreateAllUserStorage(user.Id);
+            await _storageService.CreateAllUserStorage(user.Id);
+
+            await _context.SaveChangesAsync();
 
             var token = JwtUtils.generateToken(user, jwtKey);
 
@@ -70,7 +72,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("session")]
-    public ActionResult<User> GetLoggedInUser()
+    public async Task<ActionResult<User>> GetLoggedInUser()
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -81,7 +83,7 @@ public class UserController : ControllerBase
 
         try
         {
-            return _userService.GetUserById((int)userId);
+            return await _userService.GetUserById((int)userId);
 
         }
         catch (System.Exception)
@@ -91,7 +93,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("company/name")]
-    public ActionResult UpdateCompanyName([FromBody] UpdateCompanyNameCmd cmd)
+    public async Task<ActionResult> UpdateCompanyName([FromBody] UpdateCompanyNameCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -102,8 +104,8 @@ public class UserController : ControllerBase
 
         try
         {
-            _userService.UpdateCompanyName((int)userId, cmd.CompanyName);
-            _dbContext.SaveChanges();
+            await _userService.UpdateCompanyName((int)userId, cmd.CompanyName);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)

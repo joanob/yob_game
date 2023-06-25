@@ -12,13 +12,16 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public User Login(string username, string password)
+    public async Task<User> Login(string username, string password)
     {
         if (username == "" || password == "")
         {
             throw new Exception("Empty data");
         }
-        return _userRepository.Login(username, password);
+
+        var user = await _userRepository.Login(username, password);
+
+        return user;
     }
 
     public void Signup(string username, string password)
@@ -33,27 +36,26 @@ public class UserService : IUserService
         _userRepository.Signup(user, password);
     }
 
-    public User GetUserById(int id)
+    public async Task<User> GetUserById(int id)
     {
-        return _userRepository.GetById(id);
+        return await _userRepository.GetById(id);
     }
 
-    public void UpdateCompanyName(int userId, string companyName)
+    public async Task UpdateCompanyName(int userId, string companyName)
     {
         if (companyName == "")
         {
             throw new Exception("Company name is empty");
         }
-        _userRepository.UpdateCompanyName(userId, companyName);
+        await _userRepository.UpdateCompanyName(userId, companyName);
     }
 
-    public void UpdateCompanyMoney(int userId, int money)
+    public async Task UpdateCompanyMoney(int userId, int money)
     {
         if (money < 0)
         {
             throw new Exception("Money cannot be negative");
         }
-        _userRepository.UpdateCompanyMoney(userId, money);
+        await _userRepository.UpdateCompanyMoney(userId, money);
     }
-
 }

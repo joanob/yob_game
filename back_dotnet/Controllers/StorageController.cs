@@ -7,19 +7,19 @@ namespace Controllers;
 [Route("api/storage")]
 public class StorageController : ControllerBase
 {
-    private AppDbContext _dbContext;
+    private AppDbContext _context;
     private IStorageService _storageService;
     private IMarketService _marketService;
 
-    public StorageController(AppDbContext dbContext, IStorageService storageService, IMarketService marketService)
+    public StorageController(AppDbContext context, IStorageService storageService, IMarketService marketService)
     {
-        _dbContext = dbContext;
+        _context = context;
         _storageService = storageService;
         _marketService = marketService;
     }
 
     [HttpGet]
-    public ActionResult<List<Storage>> GetAllStorage()
+    public async Task<ActionResult<List<Storage>>> GetAllStorage()
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -30,7 +30,7 @@ public class StorageController : ControllerBase
 
         try
         {
-            return _storageService.GetAllStorage((int)userId);
+            return await _storageService.GetAllStorage((int)userId);
         }
         catch (System.Exception)
         {
@@ -39,7 +39,7 @@ public class StorageController : ControllerBase
     }
 
     [HttpPost("buy")]
-    public ActionResult BuyResources([FromBody] BuySellStorageCmd cmd)
+    public async Task<ActionResult> BuyResources([FromBody] BuySellStorageCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -50,8 +50,8 @@ public class StorageController : ControllerBase
 
         try
         {
-            _marketService.BuyResources((int)userId, cmd.ResourceId, cmd.Quantity);
-            _dbContext.SaveChanges();
+            await _marketService.BuyResources((int)userId, cmd.ResourceId, cmd.Quantity);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)
@@ -61,7 +61,7 @@ public class StorageController : ControllerBase
     }
 
     [HttpPost("sell")]
-    public ActionResult SellResources([FromBody] BuySellStorageCmd cmd)
+    public async Task<ActionResult> SellResources([FromBody] BuySellStorageCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -72,8 +72,8 @@ public class StorageController : ControllerBase
 
         try
         {
-            _marketService.SellResources((int)userId, cmd.ResourceId, cmd.Quantity);
-            _dbContext.SaveChanges();
+            await _marketService.SellResources((int)userId, cmd.ResourceId, cmd.Quantity);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)
