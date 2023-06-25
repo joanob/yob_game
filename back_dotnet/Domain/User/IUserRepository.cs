@@ -2,7 +2,7 @@ namespace Domain;
 
 public interface IUserRepository
 {
-    Task Signup(User user, string password);
+    void Signup(User user, string password);
 
     Task<User> Login(string username, string password);
 

@@ -1,4 +1,5 @@
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data;
 
@@ -11,24 +12,7 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public Task<User> Login(string username, string password)
-    {
-        var user = _context.Users.Where(u => u.Username == username).FirstOrDefault();
-
-        if (user == null)
-        {
-            throw new Exception("Not user found with username: " + username);
-        }
-
-        if (BCrypt.Net.BCrypt.Verify(password, user.Password))
-        {
-            return Task.FromResult(new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney));
-        }
-
-        throw new Exception("Incorrect password for username: " + username);
-    }
-
-    public async Task Signup(User user, string password)
+    public void Signup(User user, string password)
     {
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
@@ -37,12 +21,28 @@ public class UserRepository : IUserRepository
         try
         {
             _context.Users.Add(userdto);
-            await _context.SaveChangesAsync();
         }
         catch (System.Exception)
         {
             throw;
         }
+    }
+
+    public async Task<User> Login(string username, string password)
+    {
+        var user = await _context.Users.Where(u => u.Username == username).FirstOrDefaultAsync();
+
+        if (user == null)
+        {
+            throw new Exception("Not user found with username: " + username);
+        }
+
+        if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+        {
+            return new User(user.Id, user.Username, user.CompanyName, user.CompanyMoney);
+        }
+
+        throw new Exception("Incorrect password for username: " + username);
     }
 
     public async Task<User> GetById(int id)
@@ -67,8 +67,6 @@ public class UserRepository : IUserRepository
         }
 
         user.CompanyName = companyName;
-
-        await _context.SaveChangesAsync();
     }
 
     public async Task UpdateCompanyMoney(int userId, int money)
@@ -81,7 +79,5 @@ public class UserRepository : IUserRepository
         }
 
         user.CompanyMoney = (uint)money;
-
-        await _context.SaveChangesAsync();
     }
 }

@@ -22,7 +22,7 @@ public class StorageService : IStorageService
         {
             if (existingStorage.Find(s => s.ResourceId == resource.Id) == null)
             {
-                await _storageRepository.CreateResourceStorage(new Storage(userId, resource.Id, 0));
+                _storageRepository.CreateResourceStorage(new Storage(userId, resource.Id, 0));
             }
         }
 

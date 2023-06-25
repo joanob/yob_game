@@ -21,7 +21,7 @@ public class UserService : IUserService
         return await _userRepository.Login(username, password);
     }
 
-    public async Task Signup(string username, string password)
+    public Task Signup(string username, string password)
     {
         if (username == "" || password == "")
         {
@@ -30,7 +30,8 @@ public class UserService : IUserService
 
         var user = new User(0, username, "", initialCompanyMoney);
 
-        await _userRepository.Signup(user, password);
+        _userRepository.Signup(user, password);
+        return Task.CompletedTask;
     }
 
     public async Task<User> GetUserById(int id)

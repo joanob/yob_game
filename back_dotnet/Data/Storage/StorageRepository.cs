@@ -1,4 +1,5 @@
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data;
 
@@ -11,14 +12,13 @@ public class StorageRepository : IStorageRepository
         _context = context;
     }
 
-    public async Task CreateResourceStorage(Storage storage)
+    public void CreateResourceStorage(Storage storage)
     {
         StorageDTO storageDTO = new StorageDTO(storage.UserId, storage.ResourceId, storage.Quantity);
 
         try
         {
             _context.Storage.Add(storageDTO);
-            await _context.SaveChangesAsync();
         }
         catch (System.Exception)
         {
@@ -26,9 +26,9 @@ public class StorageRepository : IStorageRepository
         }
     }
 
-    public Task<List<Storage>> GetAllStorage(int userId)
+    public async Task<List<Storage>> GetAllStorage(int userId)
     {
-        var dtos = _context.Storage.Where(s => s.UserId == userId).ToList();
+        var dtos = await _context.Storage.Where(s => s.UserId == userId).ToListAsync();
 
         var storages = new List<Storage>();
 
@@ -37,28 +37,26 @@ public class StorageRepository : IStorageRepository
             storages.Add(new Storage(dto.UserId, dto.ResourceId, dto.Quantity));
         }
 
-        return Task.FromResult(storages);
+        return storages;
     }
 
-    public Task<Storage> GetResourceStorage(int userId, int resourceId)
+    public async Task<Storage> GetResourceStorage(int userId, int resourceId)
     {
-        var dto = _context.Storage.Where(s => s.UserId == userId && s.ResourceId == resourceId).Single();
+        var dto = await _context.Storage.Where(s => s.UserId == userId && s.ResourceId == resourceId).SingleAsync();
 
-        return Task.FromResult(new Storage(dto.UserId, dto.ResourceId, dto.Quantity));
+        return new Storage(dto.UserId, dto.ResourceId, dto.Quantity);
     }
 
     public async Task AddResourcesToStorage(Storage storage)
     {
-        var dto = _context.Storage.Where(s => s.UserId == storage.UserId && s.ResourceId == storage.ResourceId).Single();
+        var dto = await _context.Storage.Where(s => s.UserId == storage.UserId && s.ResourceId == storage.ResourceId).SingleAsync();
 
         dto.Quantity += storage.Quantity;
-
-        await _context.SaveChangesAsync();
     }
 
     public async Task SubResourcesToStorage(Storage storage)
     {
-        var dto = _context.Storage.Where(s => s.UserId == storage.UserId && s.ResourceId == storage.ResourceId).Single();
+        var dto = await _context.Storage.Where(s => s.UserId == storage.UserId && s.ResourceId == storage.ResourceId).SingleAsync();
 
         if (dto.Quantity < storage.Quantity)
         {
@@ -66,7 +64,5 @@ public class StorageRepository : IStorageRepository
         }
 
         dto.Quantity -= storage.Quantity;
-
-        await _context.SaveChangesAsync();
     }
 }

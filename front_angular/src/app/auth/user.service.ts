@@ -78,7 +78,7 @@ export class UserService {
 
   updateCompanyName(companyName: string) {
     return this.http
-      .post(
+      .put(
         `${environment.apiBase}/user/company/name`,
         { companyName },
         { withCredentials: true }

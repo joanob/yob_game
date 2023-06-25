@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Domain;
+using Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Controllers;
@@ -8,13 +9,15 @@ namespace Controllers;
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _config;
+    private AppDbContext _context;
     private IUserService _userService;
     private IStorageService _storageService;
     private readonly string jwtKey;
 
-    public UserController(IConfiguration config, IUserService userService, IStorageService storageService)
+    public UserController(IConfiguration config, AppDbContext context, IUserService userService, IStorageService storageService)
     {
         _config = config;
+        _context = context;
         _userService = userService;
         _storageService = storageService;
 
@@ -33,6 +36,7 @@ public class UserController : ControllerBase
         try
         {
             await _userService.Signup(cmd.Username, cmd.Password);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)
@@ -99,6 +103,7 @@ public class UserController : ControllerBase
         try
         {
             await _userService.UpdateCompanyName((int)userId, cmd.CompanyName);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)

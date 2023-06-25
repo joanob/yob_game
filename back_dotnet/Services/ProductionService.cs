@@ -62,7 +62,7 @@ public class ProductionService : IProductionService
 
         long end = start + process.Miliseconds * Quantity;
 
-        await _productionRepository.CreateProduction(new Production(userId, productionBuildingId, process.Id, Quantity, start, end));
+        _productionRepository.CreateProduction(new Production(userId, productionBuildingId, process.Id, Quantity, start, end));
     }
 
     public async Task<List<Production>> GetAllProduction(int userId)

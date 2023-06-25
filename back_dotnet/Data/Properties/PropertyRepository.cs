@@ -1,4 +1,5 @@
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data;
 
@@ -11,14 +12,13 @@ public class PropertiesRepository : IPropertiesRepository
         _context = context;
     }
 
-    public async Task CreateProperty(Property property)
+    public void CreateProperty(Property property)
     {
         PropertyDTO propertyDTO = new PropertyDTO(0, property.UserId, property.ProductionBuildingId);
 
         try
         {
             _context.Property.Add(propertyDTO);
-            await _context.SaveChangesAsync();
         }
         catch (System.Exception)
         {
@@ -27,9 +27,9 @@ public class PropertiesRepository : IPropertiesRepository
 
     }
 
-    public Task<List<Property>> GetAllProperties(int userId)
+    public async Task<List<Property>> GetAllProperties(int userId)
     {
-        var dtos = _context.Property.Where(p => p.UserId == userId).ToList();
+        var dtos = await _context.Property.Where(p => p.UserId == userId).ToListAsync();
 
         var properties = new List<Property>();
 
@@ -38,12 +38,12 @@ public class PropertiesRepository : IPropertiesRepository
             properties.Add(new Property(dto.Id, dto.UserId, dto.ProductionBuildingId));
         }
 
-        return Task.FromResult(properties);
+        return properties;
     }
 
-    public Task<List<Property>> GetPropertiesByProductionBuildingId(int userId, int productionBuildingId)
+    public async Task<List<Property>> GetPropertiesByProductionBuildingId(int userId, int productionBuildingId)
     {
-        var dtos = _context.Property.Where(p => p.UserId == userId && p.ProductionBuildingId == productionBuildingId).ToList();
+        var dtos = await _context.Property.Where(p => p.UserId == userId && p.ProductionBuildingId == productionBuildingId).ToListAsync();
 
         var properties = new List<Property>();
 
@@ -52,6 +52,6 @@ public class PropertiesRepository : IPropertiesRepository
             properties.Add(new Property(dto.Id, dto.UserId, dto.ProductionBuildingId));
         }
 
-        return Task.FromResult(properties);
+        return properties;
     }
 }

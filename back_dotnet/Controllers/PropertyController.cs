@@ -1,4 +1,5 @@
 using Domain;
+using Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Controllers;
@@ -6,10 +7,12 @@ namespace Controllers;
 [Route("api/property")]
 public class PropertyController : ControllerBase
 {
+    private AppDbContext _context;
     private IPropertiesService _propertyService;
 
-    public PropertyController(IPropertiesService propertiesService)
+    public PropertyController(AppDbContext context, IPropertiesService propertiesService)
     {
+        _context = context;
         _propertyService = propertiesService;
     }
 
@@ -66,6 +69,7 @@ public class PropertyController : ControllerBase
         try
         {
             await _propertyService.BuyProperty(new Property(0, (int)userId, cmd.ProdBuildingId));
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)

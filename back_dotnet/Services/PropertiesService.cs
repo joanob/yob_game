@@ -32,7 +32,7 @@ public class PropertiesService : IPropertiesService
 
             await _userService.UpdateCompanyMoney(user.Id, (int)user.CompanyMoney);
 
-            await _propertiesRepository.CreateProperty(property);
+            _propertiesRepository.CreateProperty(property);
         }
         catch (System.Exception)
         {

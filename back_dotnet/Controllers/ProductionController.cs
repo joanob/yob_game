@@ -1,4 +1,5 @@
 using Domain;
+using Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Controllers;
@@ -6,10 +7,12 @@ namespace Controllers;
 [Route("api/production")]
 public class ProductionController : ControllerBase
 {
+    private AppDbContext _context;
     private IProductionService _productionService;
 
-    public ProductionController(IProductionService productionService)
+    public ProductionController(AppDbContext context, IProductionService productionService)
     {
+        _context = context;
         this._productionService = productionService;
     }
 
@@ -66,6 +69,7 @@ public class ProductionController : ControllerBase
         try
         {
             await _productionService.StartProduction((int)userId, productionBuildingId, cmd.ProcessId, cmd.Quantity);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)
@@ -75,7 +79,7 @@ public class ProductionController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteResource(int productionBuildingId)
+    public async Task<ActionResult> EndProduction(int productionBuildingId)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -87,6 +91,7 @@ public class ProductionController : ControllerBase
         try
         {
             await _productionService.EndProduction((int)userId, productionBuildingId);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)

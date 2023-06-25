@@ -2,7 +2,7 @@ namespace Domain;
 
 public interface IPropertiesRepository
 {
-    Task CreateProperty(Property property);
+    void CreateProperty(Property property);
 
     Task<List<Property>> GetAllProperties(int userId);
 

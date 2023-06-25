@@ -1,4 +1,5 @@
 using Domain;
+using Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Controllers;
@@ -6,11 +7,13 @@ namespace Controllers;
 [Route("api/storage")]
 public class StorageController : ControllerBase
 {
+    private AppDbContext _context;
     private IStorageService _storageService;
     private IMarketService _marketService;
 
-    public StorageController(IStorageService storageService, IMarketService marketService)
+    public StorageController(AppDbContext context, IStorageService storageService, IMarketService marketService)
     {
+        _context = context;
         _storageService = storageService;
         _marketService = marketService;
     }
@@ -48,6 +51,7 @@ public class StorageController : ControllerBase
         try
         {
             await _marketService.BuyResources((int)userId, cmd.ResourceId, cmd.Quantity);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)
@@ -69,6 +73,7 @@ public class StorageController : ControllerBase
         try
         {
             await _marketService.SellResources((int)userId, cmd.ResourceId, cmd.Quantity);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (System.Exception)

@@ -2,7 +2,7 @@ namespace Domain;
 
 public interface IStorageRepository
 {
-    Task CreateResourceStorage(Storage storage);
+    void CreateResourceStorage(Storage storage);
 
     Task<List<Storage>> GetAllStorage(int userId);
 

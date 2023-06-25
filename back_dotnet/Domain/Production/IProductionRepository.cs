@@ -2,7 +2,7 @@ namespace Domain;
 
 public interface IProductionRepository
 {
-    Task CreateProduction(Production production);
+    void CreateProduction(Production production);
 
     Task<List<Production>> GetAllProduction(int userId);
 
