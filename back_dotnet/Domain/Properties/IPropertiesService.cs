@@ -2,9 +2,9 @@ namespace Domain;
 
 public interface IPropertiesService
 {
-    void BuyProperty(Property property);
+    Task BuyProperty(Property property);
 
-    List<Property> GetAllProperties(int userId);
+    Task<List<Property>> GetAllProperties(int userId);
 
-    List<Property> GetPropertiesByProductionBuildingId(int userId, int productionBuildingId);
+    Task<List<Property>> GetPropertiesByProductionBuildingId(int userId, int productionBuildingId);
 }

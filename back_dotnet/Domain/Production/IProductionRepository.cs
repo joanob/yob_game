@@ -4,9 +4,9 @@ public interface IProductionRepository
 {
     void CreateProduction(Production production);
 
-    List<Production> GetAllProduction(int userId);
+    Task<List<Production>> GetAllProduction(int userId);
 
-    Production GetProduction(int userId, int productionBuildingId);
+    Task<Production> GetProduction(int userId, int productionBuildingId);
 
-    void EndProduction(int userId, int productionBuildingId);
+    Task EndProduction(int userId, int productionBuildingId);
 }

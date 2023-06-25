@@ -2,13 +2,13 @@ namespace Domain;
 
 public interface IStorageService
 {
-    void CreateAllUserStorage(int userId);
+    Task CreateAllUserStorage(int userId);
 
-    List<Storage> GetAllStorage(int userId);
+    Task<List<Storage>> GetAllStorage(int userId);
 
-    Storage GetResourceStorage(int userId, int resourceId);
+    Task<Storage> GetResourceStorage(int userId, int resourceId);
 
-    void AddResourcesToStorage(Storage storage);
+    Task AddResourcesToStorage(Storage storage);
 
-    void SubResourcesToStorage(Storage storage);
+    Task SubResourcesToStorage(Storage storage);
 }

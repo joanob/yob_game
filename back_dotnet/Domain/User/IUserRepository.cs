@@ -4,11 +4,11 @@ public interface IUserRepository
 {
     void Signup(User user, string password);
 
-    User Login(string username, string password);
+    Task<User> Login(string username, string password);
 
-    User GetById(int id);
+    Task<User> GetById(int id);
 
-    void UpdateCompanyName(int userId, string companyName);
+    Task UpdateCompanyName(int userId, string companyName);
 
-    void UpdateCompanyMoney(int userId, int money);
+    Task UpdateCompanyMoney(int userId, int money);
 }

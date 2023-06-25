@@ -13,10 +13,10 @@ public class StorageService : IStorageService
         _gamedataService = gameDataService;
     }
 
-    public void CreateAllUserStorage(int userId)
+    public async Task CreateAllUserStorage(int userId)
     {
         var resources = _gamedataService.GetAllResources();
-        var existingStorage = _storageRepository.GetAllStorage(userId);
+        var existingStorage = await _storageRepository.GetAllStorage(userId);
 
         foreach (var resource in resources)
         {
@@ -28,30 +28,30 @@ public class StorageService : IStorageService
 
     }
 
-    public List<Storage> GetAllStorage(int userId)
+    public async Task<List<Storage>> GetAllStorage(int userId)
     {
-        return _storageRepository.GetAllStorage(userId);
+        return await _storageRepository.GetAllStorage(userId);
     }
 
-    public Storage GetResourceStorage(int userId, int resourceId)
+    public async Task<Storage> GetResourceStorage(int userId, int resourceId)
     {
-        return _storageRepository.GetResourceStorage(userId, resourceId);
+        return await _storageRepository.GetResourceStorage(userId, resourceId);
     }
 
-    public void AddResourcesToStorage(Storage storage)
+    public async Task AddResourcesToStorage(Storage storage)
     {
-        _storageRepository.AddResourcesToStorage(storage);
+        await _storageRepository.AddResourcesToStorage(storage);
     }
 
-    public void SubResourcesToStorage(Storage storage)
+    public async Task SubResourcesToStorage(Storage storage)
     {
-        var stored = _storageRepository.GetResourceStorage(storage.UserId, storage.ResourceId);
+        var stored = await _storageRepository.GetResourceStorage(storage.UserId, storage.ResourceId);
 
         if (stored.Quantity < storage.Quantity)
         {
             throw new Exception("Not enough resources in storage");
         }
 
-        _storageRepository.SubResourcesToStorage(storage);
+        await _storageRepository.SubResourcesToStorage(storage);
     }
 }

@@ -4,11 +4,11 @@ public interface IStorageRepository
 {
     void CreateResourceStorage(Storage storage);
 
-    List<Storage> GetAllStorage(int userId);
+    Task<List<Storage>> GetAllStorage(int userId);
 
-    Storage GetResourceStorage(int userId, int resourceId);
+    Task<Storage> GetResourceStorage(int userId, int resourceId);
 
-    void AddResourcesToStorage(Storage storage);
+    Task AddResourcesToStorage(Storage storage);
 
-    void SubResourcesToStorage(Storage storage);
+    Task SubResourcesToStorage(Storage storage);
 }

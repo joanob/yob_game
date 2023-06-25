@@ -16,7 +16,7 @@ public class ProductionService : IProductionService
     }
 
 
-    public void StartProduction(int userId, int productionBuildingId, int productionProcessId, int Quantity)
+    public async Task StartProduction(int userId, int productionBuildingId, int productionProcessId, int Quantity)
     {
         if (Quantity < 1)
         {
@@ -43,7 +43,7 @@ public class ProductionService : IProductionService
         {
             var requiredQuantity = input.Quantity * Quantity;
 
-            var stored = _storageService.GetResourceStorage(userId, input.ResourceId);
+            var stored = await _storageService.GetResourceStorage(userId, input.ResourceId);
 
             if (requiredQuantity < stored.Quantity)
             {
@@ -55,7 +55,7 @@ public class ProductionService : IProductionService
         {
             var requiredQuantity = input.Quantity * Quantity;
 
-            _storageService.SubResourcesToStorage(new Storage(userId, input.ResourceId, requiredQuantity));
+            await _storageService.SubResourcesToStorage(new Storage(userId, input.ResourceId, requiredQuantity));
         }
 
         long start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -65,20 +65,20 @@ public class ProductionService : IProductionService
         _productionRepository.CreateProduction(new Production(userId, productionBuildingId, process.Id, Quantity, start, end));
     }
 
-    public List<Production> GetAllProduction(int userId)
+    public async Task<List<Production>> GetAllProduction(int userId)
     {
-        return _productionRepository.GetAllProduction(userId);
+        return await _productionRepository.GetAllProduction(userId);
     }
 
-    public Production GetProduction(int userId, int productionBuildingId)
+    public async Task<Production> GetProduction(int userId, int productionBuildingId)
     {
-        return _productionRepository.GetProduction(userId, productionBuildingId);
+        return await _productionRepository.GetProduction(userId, productionBuildingId);
     }
 
-    public void EndProduction(int userId, int productionBuildingId)
+    public async Task EndProduction(int userId, int productionBuildingId)
     {
 
-        var production = _productionRepository.GetProduction(userId, productionBuildingId);
+        var production = await _productionRepository.GetProduction(userId, productionBuildingId);
 
         if (production == null)
         {
@@ -92,7 +92,7 @@ public class ProductionService : IProductionService
             throw new Exception("Production didn't end");
         }
 
-        _productionRepository.EndProduction(userId, productionBuildingId);
+        await _productionRepository.EndProduction(userId, productionBuildingId);
 
         var process = _gamedataService.GetProductionProcessById(production.ProductionProcessId);
 
@@ -100,8 +100,7 @@ public class ProductionService : IProductionService
         {
             var producedQuantity = production.Quantity * output.Quantity;
 
-            _storageService.AddResourcesToStorage(new Storage(userId, output.ResourceId, producedQuantity));
+            await _storageService.AddResourcesToStorage(new Storage(userId, output.ResourceId, producedQuantity));
         }
     }
-
 }
