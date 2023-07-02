@@ -57,7 +57,7 @@ public class PropertyController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> BuyProperty([FromBody] BuyPropertyCmd cmd)
+    public async Task<ActionResult<Property>> BuyProperty([FromBody] BuyPropertyCmd cmd)
     {
         var userId = HttpContext.Items["UserId"];
 
@@ -68,9 +68,9 @@ public class PropertyController : ControllerBase
 
         try
         {
-            await _propertyService.BuyProperty(new Property(0, (int)userId, cmd.ProdBuildingId));
+            var property = await _propertyService.BuyProperty(new Property(0, (int)userId, cmd.ProdBuildingId));
             await _context.SaveChangesAsync();
-            return Ok();
+            return property;
         }
         catch (System.Exception)
         {

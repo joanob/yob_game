@@ -15,7 +15,7 @@ public class PropertiesService : IPropertiesService
         this._propertiesRepository = propertiesRepository;
     }
 
-    public async Task BuyProperty(Property property)
+    public async Task<Property> BuyProperty(Property property)
     {
         try
         {
@@ -32,7 +32,7 @@ public class PropertiesService : IPropertiesService
 
             await _userService.UpdateCompanyMoney(user.Id, (int)user.CompanyMoney);
 
-            _propertiesRepository.CreateProperty(property);
+            return _propertiesRepository.CreateProperty(property);
         }
         catch (System.Exception)
         {

@@ -12,13 +12,15 @@ public class PropertiesRepository : IPropertiesRepository
         _context = context;
     }
 
-    public void CreateProperty(Property property)
+    public Property CreateProperty(Property property)
     {
         PropertyDTO propertyDTO = new PropertyDTO(0, property.UserId, property.ProductionBuildingId);
 
         try
         {
             _context.Property.Add(propertyDTO);
+            property.Id = propertyDTO.Id;
+            return property;
         }
         catch (Exception)
         {
