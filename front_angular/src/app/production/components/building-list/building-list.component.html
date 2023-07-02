@@ -1,0 +1,17 @@
+<section class="d-flex flex-row justify-content-between">
+  <h4>Production buildings</h4>
+  <a routerLink="/production">Close</a>
+</section>
+<section>
+  <table class="w-100">
+    <thead></thead>
+    <tbody>
+      <tr *ngFor="let prodBuilding of this.gamedataService.productionBuildings">
+        <td>{{ prodBuilding.name }}</td>
+        <td>{{ prodBuilding.buildCost }}$</td>
+        <td><a href="/production/details">Details</a></td>
+        <td><button (click)="buyProperty(prodBuilding.id)">Buy</button></td>
+      </tr>
+    </tbody>
+  </table>
+</section>

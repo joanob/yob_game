@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { GamedataService } from '../services/gamedata.service';
-import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-storage',

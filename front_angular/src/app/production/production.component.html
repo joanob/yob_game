@@ -1,1 +1,13 @@
-<p>production works!</p>
+<section>
+  <a
+    routerLink="/production/buy"
+    class="d-block w-100 text-center p-2 bg-info rounded"
+  >
+    Buy production building
+  </a>
+</section>
+<section>
+  <p *ngFor="let property of this.propertiesService.properties">
+    {{ property.id }} {{ property.productionBuildingId }}
+  </p>
+</section>

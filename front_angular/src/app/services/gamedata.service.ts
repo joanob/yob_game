@@ -26,7 +26,7 @@ export class GamedataService {
       });
   }
 
-  getResourceById(resourceId: number) {
+  getResourceById(resourceId: number): Resource {
     return (
       this.resources.find((res) => res.id === resourceId) || {
         id: 0,
@@ -47,5 +47,16 @@ export class GamedataService {
       .subscribe((res) => {
         this.productionBuildings = res;
       });
+  }
+
+  getProductionBuildingById(prodBuildingId: number): ProductionBuilding {
+    return (
+      this.productionBuildings.find((pb) => pb.id === prodBuildingId) || {
+        id: 0,
+        name: '',
+        buildCost: 0,
+        processes: [],
+      }
+    );
   }
 }
